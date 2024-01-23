@@ -94,6 +94,7 @@ public class Main extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
             	SnmpClass snmpC=new SnmpClass();
+            	if(num==9)snmpC=new TcpUdp();
             	snmpC.setVisible(true);
             	dispose();
             }

@@ -93,8 +93,9 @@ public class Main extends JFrame{
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	SnmpClass snmpC=new SnmpClass();
-            	if(num==9)snmpC=new TcpUdp();
+            	SnmpClass snmpC=null;//new SnmpClass();
+            	if(num==4)snmpC=new BgpNeighbor();
+            	else if(num==9)snmpC=new TcpUdp();
             	snmpC.setVisible(true);
             	dispose();
             }

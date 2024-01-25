@@ -39,9 +39,9 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 	public static JTable TableView;
 	public static DefaultTableModel model = new DefaultTableModel();
 	
-	BgpNeighbor(){frame_config();}
+	BgpNeighbor(){frame_config2();}
 	
-	private void frame_config() {
+	private void frame_config2() {
 		SwingUtilities.invokeLater(() -> {
 	        createAndShowGUI();
 	    });
@@ -89,22 +89,10 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 		model.addColumn("Keepalive");
 		model.addColumn("Elapsed time");
 
-        ///String[] columnNames = {"Column 1", "Column 2", "Column 3"};
-        //Object[][] data = {{"Data 1", "Data 2", "Data 3"}};
         TableView = new JTable(model);
         bottomPanel = new JScrollPane(TableView);
 
-        // Podešavanje JSplitPane
-        //JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
-        //splitPane.setDividerLocation(100); // Postavite željenu visinu podele
 
-        // Podešavanje različitih svojstava SplitPane-a (opciono)
-        //splitPane.setResizeWeight(0.5);
-        //splitPane.setOneTouchExpandable(true);
-        //splitPane.setContinuousLayout(true);
-
-        // Dodavanje SplitPane-a na JFrame
-        //frame.getContentPane().add(splitPane);
         frame.add(topPanel);
         frame.add(bottomPanel);
         bottomPanel.setVisible(true);
@@ -165,26 +153,12 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 	}
     
     public static void tableRead(List<TableEvent> iftTableUtils ) {
-    	//DefaultTableModel model = new DefaultTableModel();
-    	System.out.println(model);
-		
-		//System.out.println(iftTableUtils.size());
-		//TableView = new JTable(model);
-		
-		System.out.println(TableView);
-		//TableView.setAutoCreateColumnsFromModel(true);
-		
-		
-		//bottomPanel = new JScrollPane(TableView);
-		//frame.add(bottomPanel);
-		
 		TableView.revalidate();
 		TableView.repaint();
 		bottomPanel.setVisible(true);
 		frame.revalidate(); 
 		frame.repaint();
-		
-		
+			
 		/*
 		int ukupno=iftTableUtils.size();
 		int kolona=24;

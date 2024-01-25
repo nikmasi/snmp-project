@@ -43,21 +43,7 @@ import org.snmp4j.util.TableEvent;
 import org.snmp4j.util.TableUtils;
 
 public class TcpUdp extends SnmpClass implements ActionListener{
-	private static JTabbedPane tabs;
-	private static JPanel mainPanel;
-	private static JTabbedPane tabbedPane;
-	private static JPanel panel1;
-	private static JPanel panel2;
 	
-	public static final String COMMUNITY = "si2019";
-	public static final String R1_HOST = "192.168.10.1";
-	public static final String R2_HOST = "192.168.20.1";
-	public static final String R3_HOST = "192.168.30.1";
-	public static final int PORT = 161;
-	public static final int LISTENER_PORT = 1620;
-	public static final String[] HOSTS = {R1_HOST, R2_HOST, R3_HOST};
-	
-	private static Timer timer;
 	                          //1          2      3          4              5           6           7
 	private String[] values= {"closed","listen","synSent","synReceived","established","finWait1","finWait2",
 			"closeWait","lastAck","closing","timeWait","deleteTCB"};
@@ -182,8 +168,7 @@ public class TcpUdp extends SnmpClass implements ActionListener{
             }
         });
         timer.start();
-		
-		//DefaultTableModel model = new DefaultTableModel();
+
 		model.addColumn("tcpConnState");
 		model.addColumn("tcpConnLocalAddress");
 		model.addColumn("tcpConnLocalPort");
@@ -201,19 +186,7 @@ public class TcpUdp extends SnmpClass implements ActionListener{
 
 		
 		tabbedPane.addTab("tcp"+ipAddress,tcpTablePane);      
-		/*
-		tcpTableRead(tcpTableEvents,model);
-		*/
-
 	
-		/*
-		OID udpListenerTableOID = new OID(".1.3.6.1.2.1.7.5");
-		List<TableEvent> udpTableEvents = tableUtils.getTable(target, new OID[]{udpListenerTableOID}, null, null);
-
-		System.out.println(udpTableEvents);
-		*/
-		
-		//DefaultTableModel modelUDP = new DefaultTableModel();
 		modelUDP.addColumn("udpLocalAddress");
 		modelUDP.addColumn("udpLocalPort");
 		
@@ -226,16 +199,13 @@ public class TcpUdp extends SnmpClass implements ActionListener{
     }
 	
     //frameConfig
+	@Override
 	public void frame_configBasic() {
-		this.setTitle("snmp");
-		this.getContentPane().setBackground(new Color(17, 39, 49));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.setSize(1060,500);
-		this.setLayout(new GridLayout(1,2));
-		this.setVisible(true);
+		super.frame_configBasic();
+		this.setTitle("tcpUdp");	
 	}
 	
+	@Override
 	public void frame_configPanels() {
 		mainPanel = new JPanel(new BorderLayout());
 
@@ -252,10 +222,7 @@ public class TcpUdp extends SnmpClass implements ActionListener{
         this.setVisible(true);
 	}
 	
-	public void frame_config() {
-		frame_configBasic();
-		frame_configPanels();
-	}
+	
 	
 	private static JPanel createPanel1() {
         JPanel panel = new JPanel();
@@ -355,7 +322,7 @@ public class TcpUdp extends SnmpClass implements ActionListener{
         return panel;
     }
 	
-	TcpUdp(){ frame_config(); }
+	TcpUdp(){ super(); }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}

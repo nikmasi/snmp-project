@@ -1,6 +1,7 @@
 package snmpProject;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -31,14 +32,146 @@ import org.snmp4j.util.TableUtils;
 
 public class BgpNeighbor extends SnmpClass implements ActionListener{
 
-	public static final String COMMUNITY = "si2019";
-	private static Timer timer;
+	
 	
 	public static JScrollPane bottomPanel;
 	public static JPanel frame;
 	public static JTable TableView;
 	public static DefaultTableModel model = new DefaultTableModel();
 	
+	
+	
+	BgpNeighbor(){super();this.change_back_color(new Color(218,165,32));}
+	
+	@Override
+    public  void snmpG(String ipAddress) {
+		DefaultTableModel model = new DefaultTableModel();
+
+		
+		timer = new Timer(10000, new ActionListener() {
+			int cntTimer=0;
+            @Override
+            
+            public void actionPerformed(ActionEvent e) {
+                method(model,ipAddress);
+                
+                System.out.println(cntTimer++);
+            }
+        });
+        timer.start();
+
+        model.addColumn("ID");
+		model.addColumn("state");
+		model.addColumn("version");
+		model.addColumn("Remote Address");
+		model.addColumn("Remote Port");
+		model.addColumn("Remote AS");
+		model.addColumn("Updates Received");
+		model.addColumn("Updates Sent");
+		model.addColumn("Keepalive");
+		model.addColumn("Elapsed time");
+		
+		JTable TableView = new JTable(model);
+     
+		String column1Value = "Value 1";
+		String column2Value = "Value 2";
+
+		TableView.setAutoCreateColumnsFromModel(true);
+
+		JScrollPane tcpTablePane = new JScrollPane(TableView);
+
+		
+		tabbedPane.addTab(" "+ipAddress,tcpTablePane);   
+		TableView.setAutoCreateColumnsFromModel(true);
+
+		method(model,ipAddress);
+	}
+	
+	public void method(DefaultTableModel model,String ipAddress){
+		CommunityTarget target = new CommunityTarget();
+		System.out.println(ipAddress);
+        target.setAddress(new UdpAddress(ipAddress));
+        System.out.println("Router "+ipAddress);
+        target.setRetries(2);
+        target.setTimeout(1500);
+        target.setVersion(SnmpConstants.version1);
+        target.setCommunity(new OctetString(COMMUNITY));
+        
+        try {
+        	TransportMapping<?> transport = new DefaultUdpTransportMapping();
+            Snmp snmp = new Snmp(transport);
+            transport.listen();
+
+            OID ifTable = new OID(".1.3.6.1.2.1.15.3");
+            TableUtils tableUtils = new TableUtils(snmp, new DefaultPDUFactory());
+            
+            List<TableEvent> iftTableUtils = tableUtils.getTable(target, new OID[]{ifTable}, null, null);
+            
+            //System.out.println(iftTableUtils);
+            
+            model.setRowCount(0);
+            tableRead(model,iftTableUtils);
+            
+            snmp.close();
+        }
+        catch(Exception e) {}
+            
+	}
+	
+	private void tableRead(DefaultTableModel model,List<TableEvent> iftTableUtils) {
+		int y=iftTableUtils.size();
+        int brojPoKoloni2=y/10;
+    	int kolona2=0;
+    	int cnt2=0;
+  
+        
+        int ukupno=iftTableUtils.size();
+		int kolona=24;
+		int red=ukupno/kolona;
+		
+		for(int j=0;j<24;j++) {
+			if(j!=23 && j!=18 && j!=0 && j!=1 && j!=3 && j!=4 && j!=5 && j!=9 && j!=8 && j!=10)continue;
+			int brojac=0;
+			for(int i=0;i<ukupno/kolona;i++) {
+				TableEvent event=iftTableUtils.get(i+(0+j)*red);
+				
+				VariableBinding[] varBindings = event.getColumns();
+				if (varBindings != null) {
+					 for (VariableBinding varBinding : varBindings) {
+						if(j==23) {
+							model.setValueAt(varBinding.getVariable(), 23, j);
+						}else if(j==18) {
+							System.out.println("    Keepalive : "+varBinding.getVariable());
+						}else if(j==0) {
+							model.addRow(new Object[]{varBinding.getVariable()});
+						}else if(j==1) {
+							System.out.println("    stanje BGP sesije sa susedom: "+varBinding.getVariable());
+						}else if(j==3) {
+							System.out.println("    verzija BGP koja se koristi: "+varBinding.getVariable());
+						}else if(j==4) {
+							System.out.println("    IP adresa suseda: "+varBinding.getVariable());
+						}else if(j==9) {
+							System.out.println("    Autonomni sistem u kojem je sused: "+varBinding.getVariable());
+						}
+						else if(j==8) {
+							System.out.println("    Broj primljenih update poruka: "+varBinding.getVariable());
+						}
+						else if(j==10) {
+							System.out.println("    Broj poslatih update poruka po susedu: "+varBinding.getVariable());
+						}
+						
+		                
+		                	
+		             }
+			}
+		}
+	
+		
+		
+	}
+	}
+
+	/*
 	BgpNeighbor(){frame_config2();}
 	
 	private void frame_config2() {
@@ -203,9 +336,9 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 			}
 			
 		}
-		*/
+		
 	}
-	
+	*/
 	@Override
 	public void actionPerformed(ActionEvent e) {}
 

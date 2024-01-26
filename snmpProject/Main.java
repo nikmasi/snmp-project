@@ -95,6 +95,7 @@ public class Main extends JFrame{
             public void actionPerformed(ActionEvent e) {
             	SnmpClass snmpC=null;//new SnmpClass();
             	if(num==4)snmpC=new BgpNeighbor();
+            	else if(num==5)snmpC=new BgpAttributes();
             	else if(num==9)snmpC=new TcpUdp();
             	snmpC.setVisible(true);
             	dispose();

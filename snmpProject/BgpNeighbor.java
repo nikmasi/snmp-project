@@ -64,7 +64,7 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 		model.addColumn("state");
 		model.addColumn("version");
 		model.addColumn("Remote Address");
-		model.addColumn("Remote Port");
+		//model.addColumn("Remote Port");
 		model.addColumn("Remote AS");
 		model.addColumn("Updates Received");
 		model.addColumn("Updates Sent");
@@ -130,7 +130,7 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 		int red=ukupno/kolona;
 		
 		for(int j=0;j<24;j++) {
-			if(j!=23 && j!=18 && j!=0 && j!=1 && j!=3 && j!=4 && j!=5 && j!=9 && j!=8 && j!=10)continue;
+			if(j!=23 && j!=18 && j!=0 && j!=1 && j!=3 && j!=4 && j!=6 && j!=9 && j!=8 && j!=10)continue;
 			int brojac=0;
 			for(int i=0;i<ukupno/kolona;i++) {
 				TableEvent event=iftTableUtils.get(i+(0+j)*red);
@@ -139,25 +139,32 @@ public class BgpNeighbor extends SnmpClass implements ActionListener{
 				if (varBindings != null) {
 					 for (VariableBinding varBinding : varBindings) {
 						if(j==23) {
-							model.setValueAt(varBinding.getVariable(), 23, j);
+							model.setValueAt(varBinding.getVariable(), i, 8);
 						}else if(j==18) {
-							System.out.println("    Keepalive : "+varBinding.getVariable());
+							//System.out.println("    Keepalive : "+varBinding.getVariable());
+							model.setValueAt(varBinding.getVariable(), i, 7);
 						}else if(j==0) {
 							model.addRow(new Object[]{varBinding.getVariable()});
 						}else if(j==1) {
-							System.out.println("    stanje BGP sesije sa susedom: "+varBinding.getVariable());
+							model.setValueAt(varBinding.getVariable(), i, 1);
+							//System.out.println("    stanje BGP sesije sa susedom: "+varBinding.getVariable());
 						}else if(j==3) {
-							System.out.println("    verzija BGP koja se koristi: "+varBinding.getVariable());
-						}else if(j==4) {
-							System.out.println("    IP adresa suseda: "+varBinding.getVariable());
-						}else if(j==9) {
-							System.out.println("    Autonomni sistem u kojem je sused: "+varBinding.getVariable());
+							model.setValueAt(varBinding.getVariable(), i, 2);
+							//System.out.println("    verzija BGP koja se koristi: "+varBinding.getVariable());
+						}else if(j==6) {
+							model.setValueAt(varBinding.getVariable(), i, 3);
+							//System.out.println("    IP adresa suseda: "+varBinding.getVariable());
+						}else if(j==8) {
+							model.setValueAt(varBinding.getVariable(), i, 4);
+							//System.out.println("    Autonomni sistem u kojem je sused: "+varBinding.getVariable());
 						}
-						else if(j==8) {
-							System.out.println("    Broj primljenih update poruka: "+varBinding.getVariable());
+						else if(j==9) {
+							model.setValueAt(varBinding.getVariable(), i, 5);
+							//System.out.println("    Broj primljenih update poruka: "+varBinding.getVariable());
 						}
 						else if(j==10) {
-							System.out.println("    Broj poslatih update poruka po susedu: "+varBinding.getVariable());
+							model.setValueAt(varBinding.getVariable(), i, 6);
+							//System.out.println("    Broj poslatih update poruka po susedu: "+varBinding.getVariable());
 						}
 						
 		                

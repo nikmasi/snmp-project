@@ -42,7 +42,7 @@ import org.snmp4j.util.DefaultPDUFactory;
 import org.snmp4j.util.TableEvent;
 import org.snmp4j.util.TableUtils;
 
-public class TcpUdp extends SnmpClass implements ActionListener{
+public class TcpUdp extends SnmpTableView implements ActionListener{
 	
 	                          //1          2      3          4              5           6           7
 	private String[] values= {"closed","listen","synSent","synReceived","established","finWait1","finWait2",

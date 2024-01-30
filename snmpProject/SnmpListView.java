@@ -54,7 +54,7 @@ public class SnmpListView extends SnmpClass implements ActionListener{
 	@Override
     protected void snmpG(String ipAddress) {
 		//model = new DefaultTableModel();
-		
+
 		timer = new Timer(10000, new ActionListener() {
 			int cntTimer=0;
             @Override
@@ -66,7 +66,7 @@ public class SnmpListView extends SnmpClass implements ActionListener{
             }
         });
         timer.start();
-
+		
 		method(ipAddress);
 	}
 	
@@ -91,7 +91,7 @@ public class SnmpListView extends SnmpClass implements ActionListener{
             List<TableEvent> iftTableUtils = tableUtils.getTable(target, new OID[]{ifTable}, null, null);
             
             //model.setRowCount(0);
-            tableRead(iftTableUtils);
+            tableRead(iftTableUtils,ipAddress);
             
             snmp.close();
         }
@@ -99,7 +99,7 @@ public class SnmpListView extends SnmpClass implements ActionListener{
             
 	}
 	
-	protected void tableRead(List<TableEvent> iftTableUtils) {}
+	protected void tableRead(List<TableEvent> iftTableUtils,String ipAddress) {}
 
 	
 	@Override

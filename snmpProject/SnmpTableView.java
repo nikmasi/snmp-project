@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -39,6 +40,12 @@ public class SnmpTableView extends SnmpClass implements ActionListener{
 	protected String oid;
 	
 	protected DefaultTableModel model;
+	protected ArrayList<DefaultTableModel> models;
+	
+	SnmpTableView(){
+		super();
+		models=new ArrayList<>();
+	}
 	
 	@Override
 	protected void frame_configPanels() {
@@ -150,9 +157,11 @@ public class SnmpTableView extends SnmpClass implements ActionListener{
 	}
 	
 	protected void addModel() {};
+	
 	@Override
     protected void snmpG(String ipAddress) {
 		model = new DefaultTableModel();
+		models.add(model);
 		
 		timer = new Timer(10000, new ActionListener() {
 			int cntTimer=0;
